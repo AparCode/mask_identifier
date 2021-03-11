@@ -1,1 +1,1 @@
-# mask_identifier
+# Mask Identifier 1.0
