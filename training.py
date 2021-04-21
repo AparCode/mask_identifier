@@ -27,7 +27,7 @@ y_test = np.append(y_test_mask, y_test_without, axis=0)
 optim = SGD(model.parameters, learning_rate=0.01, momentum=0.9, weight_decay=5e-04)
 batch_size = 5 # change based on total number of images in dataset
 
-# plotter, fig, ax = create_plot(metrics=["loss", "accuracy"]) ### TODO uncomment when working in jupyter notebook
+plotter, fig, ax = create_plot(metrics=["loss", "accuracy"]) ### TODO uncomment when working in jupyter notebook
 
 for epoch_cnt in range(10):
     idxs = np.arange(len(x_train))
@@ -48,26 +48,26 @@ for epoch_cnt in range(10):
         loss.null_gradients()
 
         # TODO uncomment in jupyter notebook
-        # plotter.set_train_batch({"loss" : loss.item(),
-        #                          "accuracy" : acc},
-        #                          batch_size=batch_size)
+        plotter.set_train_batch({"loss" : loss.item(),
+                                  "accuracy" : acc},
+                                 batch_size=batch_size)
 
 
     # TODO uncomment in jupyter notebook
-    # test_idxs = np.arange(len(x_test))
+    test_idxs = np.arange(len(x_test))
     
-    # for batch_cnt in range(0, len(x_test)//batch_size):
-    #     start_ind = batch_cnt*batch_size
-    #     batch_indices = test_idxs[start_ind : start_ind+batch_size]
+    for batch_cnt in range(0, len(x_test)//batch_size):
+        start_ind = batch_cnt*batch_size
+        batch_indices = test_idxs[start_ind : start_ind+batch_size]
         
-    #     batch = x_test[batch_indices]
+        batch = x_test[batch_indices]
         
-    #     pred_test = model(batch)
-    #     true_test = y_test[batch_indices]
+        pred_test = model(batch)
+        true_test = y_test[batch_indices]
 
-    #     test_accuracy = cm.accuracy(pred_test, true_test)        
-    #     plotter.set_test_batch({"accuracy" : test_accuracy}, batch_size=batch_size)
-    # plotter.set_test_epoch()
+        test_accuracy = cm.accuracy(pred_test, true_test)        
+        plotter.set_test_batch({"accuracy" : test_accuracy}, batch_size=batch_size)
+        plotter.set_test_epoch()
 
 # evaluate model
 pred = model(x_test)

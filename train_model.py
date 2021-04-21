@@ -24,7 +24,7 @@ y_train = np.append(y_train_mask, y_train_without, axis=0)
 y_test = np.append(y_test_mask, y_test_without, axis=0)
 optim = torch.optim.SGD(model.parameters, lr=0.01, momentum=0.9, weight_decay=5E-4) 
 
-# plotter, fig, ax = create_plot(metrics=["loss", "accuracy"]) ### TODO uncomment when working in jupyter notebook
+plotter, fig, ax = create_plot(metrics=["loss", "accuracy"]) ### TODO uncomment when working in jupyter notebook
 
 loss_fn = torch.nn.CrossEntropyLoss()
 batch_size = 30
@@ -48,24 +48,24 @@ for epoch_cnt in range(10):
         
         # TODO uncomment in jupyter notebook
         plotter.set_train_batch({"loss" : loss.item(),
-                                 "accuracy" : acc},
+                                "accuracy" : acc},
                                 batch_size = batch_size)
           
     # TODO uncomment in jupyter notebook
-    # test_idxs = np.arange(len(x_test))
+    test_idxs = np.arange(len(x_test))
     
-    # for batch_cnt in range(0, (len(x_test) // batch_size)):
-    #     start_ind = batch_cnt*batch_size
-    #     batch_indices = test_idxs[start_ind : start_ind+batch_size]
+    for batch_cnt in range(0, (len(x_test) // batch_size)):
+         start_ind = batch_cnt*batch_size
+         batch_indices = test_idxs[start_ind : start_ind+batch_size]
         
-    #     batch = x_test[batch_indices]
+         batch = x_test[batch_indices]
         
-    #     pred_test = model(torch.Tensor(batch).to(device))
-    #     true_test = y_test[batch_indices]
+         pred_test = model(torch.Tensor(batch).to(device))
+         true_test = y_test[batch_indices]
 
-    #     test_accuracy = m.accuracy(pred_test.cpu(), true_test)        
-    #     plotter.set_test_batch({"accuracy" : test_accuracy}, batch_size=batch_size)
-    # plotter.set_test_epoch()
+         test_accuracy = m.accuracy(pred_test.cpu(), true_test)        
+         plotter.set_test_batch({"accuracy" : test_accuracy}, batch_size=batch_size)
+         plotter.set_test_epoch()
 
 pred = model(torch.Tensor(x_test).to(device))
 accuracy = m.accuracy(pred.cpu(), y_test)

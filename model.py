@@ -33,12 +33,14 @@ class TorchModel(nn.Module):
         x = relu(self.dense1(x.reshape(x.shape[0], -1)))
         return self.dense2(x)
 
-    # @property
-    # def parameters(self):
-    #     params = []
-    #     for layer in (self.conv1, self.conv2, self.dense1, self.dense2):
-    #         params += list((layer.weight, layer.bias))
-    #     return params
+#uncomment
+    @property
+    def parameters(self):
+        params = []
+        for layer in (self.conv1, self.conv2, self.dense1, self.dense2):
+            params += list((layer.weight, layer.bias))
+        return params
+###
 
 def accuracy(predictions, truth):
     if isinstance(predictions, torch.Tensor):
@@ -55,5 +57,5 @@ def convert_data(images):
     return (images[:divide], images[divide:])
 
 # Saving and Loading
-# Save: torch.save(model.state_dict(), PATH)
+#Save: torch.save(model.state_dict(), PATH)
 # Load: model.load_state_dict(torch.load(PATH))

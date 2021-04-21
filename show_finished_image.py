@@ -1,5 +1,5 @@
 import cv2
-import detect_faces as f_data
+import detect_faces as data
 import numpy as np
 import cnn_model_setup as cm
 import torch
@@ -14,8 +14,8 @@ def convert_image(image, model, landmarks, bounding_boxes, resized_crop, bgr=Tru
     -----------
     image: np.ndarray, describes image to be displayed
     model: Model, trained model that will predict mask/no mask category for each face
-    bounding_boxes: list, list of coordinates for each face (returned by f_data.find_faces)
-    resized_crop: list, list of faces in image, (returned by f_data.find_faces)
+    bounding_boxes: list, list of coordinates for each face (returned by data.find_faces)
+    resized_crop: list, list of faces in image, (returned by data.find_faces)
     bgr: boolean (optional), True = bgr images, need to be converted (cv2.readimg was used)
                              False = rgb image, does not need to be converted
     resize: boolean (optional), True = resize image to be of height/width 1000px if original
@@ -51,7 +51,7 @@ def convert_image(image, model, landmarks, bounding_boxes, resized_crop, bgr=Tru
     converted = np.append(convertedOne, convertedTwo, axis=0)
 
     preds = model(torch.Tensor(converted).to(device))
-    preds = np.argmax(preds.f_data, axis=1)
+    preds = np.argmax(preds.data, axis=1)
     num_wearing_masks = np.count_nonzero(preds)
 
     for box, pred in zip(bounding_boxes, preds):
